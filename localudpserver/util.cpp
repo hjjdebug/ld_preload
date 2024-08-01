@@ -70,9 +70,9 @@ void report()
 	sprintf(filename, "./report-%04d-%02d-%02d_%02d:%02d:%02d.txt", timeTm.tm_year + 1900, timeTm.tm_mon + 1, timeTm.tm_mday, timeTm.tm_hour, timeTm.tm_min, timeTm.tm_sec);
 	FILE* fp = fopen(filename, "a+");
 	// header
-//	char header[1024] = "index	time	addr	size	stackcount	stacklist\n";
+//	char header[1024] = "index	time	addr	size	type stackcount	stacklist\n";
 	char header[1024];
-	sprintf(header,"%-10s\t %-10s\t %-16s\t %-10s\t %-10s\t %-10s\t %s\n","index","time","addr","size","type","stackcount","stacklist");
+	sprintf(header,"%-10s %-10s %-15s %-8s %-8s %-3s %s\n","index","time","addr","size","type","stc","stacklist");
 	fwrite(header, 1, strlen(header), fp);
 	// body
 	char body[2048]; 
@@ -100,7 +100,7 @@ void report()
 		p_tm=localtime(&iter->m_time);
 		sprintf(szTime,"%02d:%02d:%02d",p_tm->tm_hour,p_tm->tm_min,p_tm->tm_sec);
 		const char *szType = getStringType(iter->m_udp_packet->type);
-		sprintf(body, "%-10ld\t %-10s\t 0x%-14lx\t %-10d\t %-10s\t %-10d\t %s\n", iter->index, szTime, iter->m_udp_packet->pointaddr, iter->m_udp_packet->size, szType,iter->m_udp_packet->stackcount, stackinfo);
+		sprintf(body, "%-10ld %-10s 0x%-13lx %-8d %-8s %-3d %s\n", iter->index, szTime, iter->m_udp_packet->pointaddr, iter->m_udp_packet->size, szType,iter->m_udp_packet->stackcount, stackinfo);
 
 		fwrite(body, 1, strlen(body), fp);
 	}
